@@ -27,11 +27,6 @@ Born from a Reddit thread and months of iteration, **The Agency** is a growing c
 ### Option 1: Use with Claude Code (Recommended)
 
 ```bash
-# Clone the repo (if you haven't already)
-git clone https://github.com/msitarzewski/agency-agents
-cd agency-agents
-
-# Install agents to your Claude Code directory — no conversion needed
 ./scripts/install.sh --tool claude-code
 ```
 
