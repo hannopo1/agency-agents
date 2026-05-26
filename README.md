@@ -27,11 +27,17 @@ Born from a Reddit thread and months of iteration, **The Agency** is a growing c
 ### Option 1: Use with Claude Code (Recommended)
 
 ```bash
-# Copy agents to your Claude Code directory
-cp -r agency-agents/* ~/.claude/agents/
+# Clone the repo (if you haven't already)
+git clone https://github.com/msitarzewski/agency-agents
+cd agency-agents
 
-# Now activate any agent in your Claude Code sessions:
-# "Hey Claude, activate Frontend Developer mode and help me build a React component"
+# Install agents to your Claude Code directory — no conversion needed
+./scripts/install.sh --tool claude-code
+```
+
+Then activate any agent in your Claude Code sessions:
+```
+Use the Frontend Developer agent to help me build a React component.
 ```
 
 ### Option 2: Use as Reference
@@ -520,16 +526,22 @@ The Agency works natively with Claude Code, and ships conversion + install scrip
 
 ### ⚡ Quick Install
 
-**Step 1 -- Generate integration files:**
+**Claude Code / GitHub Copilot** — native `.md` format, no conversion step:
 ```bash
-./scripts/convert.sh
-# Faster (parallel, output order may vary): ./scripts/convert.sh --parallel
+./scripts/install.sh --tool claude-code
+./scripts/install.sh --tool copilot
 ```
 
-**Step 2 -- Install (interactive, auto-detects your tools):**
+**All other tools** — generate integration files first, then install:
 ```bash
-./scripts/install.sh
-# Faster (parallel, output order may vary): ./scripts/install.sh --no-interactive --parallel
+./scripts/convert.sh   # generate integration files (skip for claude-code / copilot)
+./scripts/install.sh   # interactive installer — auto-detects your tools
+```
+
+On multi-core machines, both steps can run in parallel:
+```bash
+./scripts/convert.sh --parallel
+./scripts/install.sh --no-interactive --parallel
 ```
 
 The installer scans your system for installed tools, shows a checkbox UI, and lets you pick exactly what to install:

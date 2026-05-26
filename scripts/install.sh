@@ -103,6 +103,9 @@ INTEGRATIONS="$REPO_ROOT/integrations"
 
 ALL_TOOLS=(claude-code copilot antigravity gemini-cli opencode openclaw cursor aider windsurf qwen)
 
+# Tools that use the native .md format and need no files from integrations/
+NATIVE_TOOLS=(claude-code copilot)
+
 # ---------------------------------------------------------------------------
 # Usage
 # ---------------------------------------------------------------------------
@@ -127,6 +130,18 @@ check_integrations() {
     err "integrations/ not found. Run ./scripts/convert.sh first."
     exit 1
   fi
+}
+
+# Returns 0 (true) if any tool in the list needs converted files from integrations/.
+# Native tools (claude-code, copilot) copy directly from the repo and are excluded.
+needs_integrations_for() {
+  local t n
+  for t in "$@"; do
+    local is_native=false
+    for n in "${NATIVE_TOOLS[@]}"; do [[ "$t" == "$n" ]] && is_native=true && break; done
+    $is_native || return 0
+  done
+  return 1
 }
 
 # ---------------------------------------------------------------------------
@@ -505,8 +520,6 @@ main() {
     esac
   done
 
-  check_integrations
-
   # Validate explicit tool
   if [[ "$tool" != "all" ]]; then
     local valid=false t
@@ -554,6 +567,12 @@ main() {
     dim "  Tip: use --tool <name> to force-install a specific tool."
     dim "  Available: ${ALL_TOOLS[*]}"
     exit 0
+  fi
+
+  # Native tools (claude-code, copilot) copy directly from the repo — no integrations/ needed.
+  # Only require integrations/ when at least one non-native tool is being installed.
+  if needs_integrations_for "${SELECTED_TOOLS[@]}"; then
+    check_integrations
   fi
 
   # When parent runs install.sh --parallel, it spawns workers with AGENCY_INSTALL_WORKER=1
