@@ -17,19 +17,22 @@ supported agentic coding tools.
 
 ## Quick Install
 
+**Claude Code and GitHub Copilot** use the native `.md` format — no conversion needed:
 ```bash
-# Install for all detected tools automatically
+./scripts/install.sh --tool claude-code
+./scripts/install.sh --tool copilot
+```
+
+**All other tools** require a conversion step first:
+```bash
+# Generate integration files, then install interactively
+./scripts/convert.sh
 ./scripts/install.sh
 
-# Install a specific home-scoped tool
-./scripts/install.sh --tool antigravity
-./scripts/install.sh --tool copilot
-./scripts/install.sh --tool openclaw
-./scripts/install.sh --tool claude-code
-
-# Gemini CLI needs generated integration files on a fresh clone
-./scripts/convert.sh --tool gemini-cli
-./scripts/install.sh --tool gemini-cli
+# Or target a specific tool
+./scripts/convert.sh --tool antigravity && ./scripts/install.sh --tool antigravity
+./scripts/convert.sh --tool gemini-cli  && ./scripts/install.sh --tool gemini-cli
+./scripts/convert.sh --tool openclaw    && ./scripts/install.sh --tool openclaw
 ```
 
 For project-scoped tools such as OpenCode, Cursor, Aider, and Windsurf, run

@@ -526,14 +526,19 @@ The Agency works natively with Claude Code, and ships conversion + install scrip
 
 ### ⚡ Quick Install
 
-**Step 1 -- Generate integration files:**
+**Claude Code / GitHub Copilot** — native `.md` format, no conversion step:
 ```bash
-./scripts/convert.sh
-# Faster (parallel, output order may vary): ./scripts/convert.sh --parallel
+./scripts/install.sh --tool claude-code
+./scripts/install.sh --tool copilot
 ```
 
-**Step 2 -- Install (interactive, auto-detects your tools):**
+**All other tools** — generate integration files first, then install:
 ```bash
+# Step 1 -- generate integration files (not needed for claude-code or copilot)
+./scripts/convert.sh
+# Faster (parallel, output order may vary): ./scripts/convert.sh --parallel
+
+# Step 2 -- install (interactive, auto-detects your tools)
 ./scripts/install.sh
 # Faster (parallel, output order may vary): ./scripts/install.sh --no-interactive --parallel
 ```
