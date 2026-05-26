@@ -534,13 +534,14 @@ The Agency works natively with Claude Code, and ships conversion + install scrip
 
 **All other tools** — generate integration files first, then install:
 ```bash
-# Step 1 -- generate integration files (not needed for claude-code or copilot)
-./scripts/convert.sh
-# Faster (parallel, output order may vary): ./scripts/convert.sh --parallel
+./scripts/convert.sh   # generate integration files (skip for claude-code / copilot)
+./scripts/install.sh   # interactive installer — auto-detects your tools
+```
 
-# Step 2 -- install (interactive, auto-detects your tools)
-./scripts/install.sh
-# Faster (parallel, output order may vary): ./scripts/install.sh --no-interactive --parallel
+On multi-core machines, both steps can run in parallel:
+```bash
+./scripts/convert.sh --parallel
+./scripts/install.sh --no-interactive --parallel
 ```
 
 The installer scans your system for installed tools, shows a checkbox UI, and lets you pick exactly what to install:
