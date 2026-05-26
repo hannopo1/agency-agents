@@ -10,6 +10,8 @@
 #   ./scripts/convert.sh [--tool <name>] [--out <dir>] [--parallel] [--jobs N] [--help]
 #
 # Tools:
+#   claude-code  — No conversion needed (native .md format). Use install.sh directly.
+#   copilot      — No conversion needed (native .md format). Use install.sh directly.
 #   antigravity  — Antigravity skill files (~/.gemini/antigravity/skills/)
 #   gemini-cli   — Gemini CLI extension (skills/ + gemini-extension.json)
 #   opencode     — OpenCode agent files (.opencode/agent/*.md)
@@ -18,7 +20,7 @@
 #   windsurf     — Single .windsurfrules for Windsurf
 #   openclaw     — OpenClaw SOUL.md files (openclaw_workspace/<agent>/SOUL.md)
 #   qwen         — Qwen Code SubAgent files (~/.qwen/agents/*.md)
-#   all          — All tools (default)
+#   all          — All tools that require conversion (default)
 #
 # Output is written to integrations/<tool>/ relative to the repo root.
 # This script never touches user config dirs — see install.sh for that.
@@ -500,12 +502,19 @@ main() {
     esac
   done
 
-  local valid_tools=("antigravity" "gemini-cli" "opencode" "cursor" "aider" "windsurf" "openclaw" "qwen" "all")
+  local valid_tools=("claude-code" "copilot" "antigravity" "gemini-cli" "opencode" "cursor" "aider" "windsurf" "openclaw" "qwen" "all")
   local valid=false
   for t in "${valid_tools[@]}"; do [[ "$t" == "$tool" ]] && valid=true && break; done
   if ! $valid; then
     error "Unknown tool '$tool'. Valid: ${valid_tools[*]}"
     exit 1
+  fi
+
+  # Native tools use the repo's .md files directly — no conversion step.
+  if [[ "$tool" == "claude-code" || "$tool" == "copilot" ]]; then
+    info "No conversion needed — ${tool} uses the native .md agent format."
+    info "Install directly with: ./scripts/install.sh --tool ${tool}"
+    exit 0
   fi
 
   header "The Agency -- Converting agents to tool-specific formats"
