@@ -1,6 +1,9 @@
 # agent.py — Claude Agents SDK + Composio
 
 import asyncio
+from dotenv import load_dotenv
+load_dotenv()
+
 from composio import Composio
 from composio_claude_agent_sdk import ClaudeAgentSDKProvider
 from claude_agent_sdk import ClaudeSDKClient, ClaudeAgentOptions, create_sdk_mcp_server
